@@ -1,0 +1,9 @@
+
+¥
+java:S1104"bMake KAFKA_BOOTSTRAP_SERVER a static final constant or non-public and provide accessors if needed.(´ç˜ì8×Ç‹‰2J$17114c23-4810-48ba-81f9-e1cea04ab9d0
+
+java:S1444"<Make this "public static KAFKA_BOOTSTRAP_SERVER" field final(´ç˜ì8ÚÇ‹‰2J$1d9b4dca-2faf-41a0-bce1-edb9239cba17
+¤
+java:S3008"aRename this field "KAFKA_BOOTSTRAP_SERVER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´ç˜ì8ŞÇ‹‰2J$c61614c3-6bbe-4332-908e-9c3f08029bb9
+v
+java:S1118":Add a private constructor to hide the implicit public one.(öùÏÉJ$79e13743-a362-4a8c-a2c5-35b64eb11a3a

@@ -1,0 +1,6 @@
+
+ž	java:S116"WRename this field "KAFKA_BROKER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³ÑÛýúÿÿÿÿ8¾¿ªÈŽ2J$3722fe6e-9415-42fa-bbb1-62a307d3db52
+£
+java:S1450"[Remove the "KAFKA_BROKER" field and declare it as a local variable in the relevant methods.(³ÑÛýúÿÿÿÿ8ÅÍ©ÈŽ2J$69ea64ea-14df-4f80-82ab-e86d11b8d926
+}	java:S125,"<This block of commented-out lines of code should be removed.(À›×8ÏÍ©ÈŽ2J$a34592a2-67c5-42c4-b750-b4ab8a5e44ad
+r	java:S106."+Replace this use of System.out by a logger.(ùïžýÿÿÿÿ8ÐÍ©ÈŽ2J$fc897049-2274-46d8-a02b-fe1a1c5a6203

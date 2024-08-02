@@ -1,0 +1,5 @@
+
+	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(›î¨ıÿÿÿÿ8ú—„É2J$8ec4a0d6-b514-4a51-88fc-441648d6f37b
+r	java:S106"+Replace this use of System.out by a logger.(¡„º¹ÿÿÿÿÿ8…˜„É2J$ee99d15a-80c1-4977-81dd-502f8cd9e72c
+£
+java:S4276#"[Refactor this code to use the more specialised Functional Interface 'UnaryOperator<Object>'(‡Ü«úÿÿÿÿ8®Í…É2J$6225e795-cd22-419e-91f1-68fcb660b912
