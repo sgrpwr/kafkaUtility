@@ -1,6 +1,6 @@
-package com.countrydelight.executor;
+package io.github.sgrpwr.executor;
 
-import com.countrydelight.populator.intf.KafkaPopulatorInterface;
+import io.github.sgrpwr.populator.intf.KafkaPopulatorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

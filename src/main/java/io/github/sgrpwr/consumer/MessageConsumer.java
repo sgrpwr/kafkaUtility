@@ -1,6 +1,6 @@
-package com.countrydelight.consumer;
+package io.github.sgrpwr.consumer;
 
-import com.countrydelight.DTO.KafkaRequestDto;
+import io.github.sgrpwr.DTO.KafkaRequestDto;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;

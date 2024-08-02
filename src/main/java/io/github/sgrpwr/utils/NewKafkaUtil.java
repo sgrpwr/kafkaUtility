@@ -1,7 +1,7 @@
-package com.countrydelight.utils;
+package io.github.sgrpwr.utils;
 
-import com.countrydelight.DTO.KafkaRequestDto;
-import com.countrydelight.common.SyncServerUrls;
+import io.github.sgrpwr.DTO.KafkaRequestDto;
+import io.github.sgrpwr.common.SyncServerUrls;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

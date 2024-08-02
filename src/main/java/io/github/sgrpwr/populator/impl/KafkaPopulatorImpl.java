@@ -1,7 +1,7 @@
-package com.countrydelight.populator.impl;
+package io.github.sgrpwr.populator.impl;
 
 
-import com.countrydelight.populator.intf.KafkaPopulatorInterface;
+import io.github.sgrpwr.populator.intf.KafkaPopulatorInterface;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.countrydelight.common;
+package io.github.sgrpwr.common;
 
 public class SyncServerUrls {
 

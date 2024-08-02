@@ -1,7 +1,7 @@
-package com.countrydelight.controller;
+package io.github.sgrpwr.controller;
 
-import com.countrydelight.DTO.KafkaRequestDto;
-import com.countrydelight.producer.MessageProducer;
+import io.github.sgrpwr.DTO.KafkaRequestDto;
+import io.github.sgrpwr.producer.MessageProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.countrydelight.DTO;
+package io.github.sgrpwr.DTO;
 
 import lombok.Data;
 

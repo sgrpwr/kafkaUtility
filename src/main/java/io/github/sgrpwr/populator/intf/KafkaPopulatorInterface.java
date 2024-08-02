@@ -1,4 +1,4 @@
-package com.countrydelight.populator.intf;
+package io.github.sgrpwr.populator.intf;
 
 public interface KafkaPopulatorInterface {
 

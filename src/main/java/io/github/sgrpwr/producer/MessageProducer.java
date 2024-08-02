@@ -1,7 +1,7 @@
-package com.countrydelight.producer;
+package io.github.sgrpwr.producer;
 
-import com.countrydelight.DTO.KafkaRequestDto;
-import com.countrydelight.utils.NewKafkaUtil;
+import io.github.sgrpwr.DTO.KafkaRequestDto;
+import io.github.sgrpwr.utils.NewKafkaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
