@@ -12,21 +12,20 @@ public class KafkaDeserializer implements Deserializer<KafkaRequestDto> {
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
+        // Configuration is not needed for this deserializer
     }
 
     @Override
     public KafkaRequestDto deserialize(String topic, byte[] data) {
-        if (data == null) {
-            return null;
-        }
         try {
             return objectMapper.readValue(data, KafkaRequestDto.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to deserialize KafkaRequestDto", e);
+            throw new RuntimeException("Failed to deserialize JSON to KafkaRequestDto", e);
         }
     }
 
     @Override
     public void close() {
+        // No resources to close
     }
 }

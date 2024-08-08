@@ -1,28 +1,25 @@
 package io.github.sgrpwr.config;
 
-import io.github.sgrpwr.dtos.KafkaRequestDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.kafka.common.serialization.Deserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.common.serialization.Serializer;
+import io.github.sgrpwr.dtos.KafkaRequestDto;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
-public class MessageSerializer implements Serializer<KafkaRequestDto> {
+public class MessageSerializer implements Deserializer<KafkaRequestDto> {
+
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public byte[] serialize(String topic, KafkaRequestDto data) {
-        byte[] serializedValue = null;
-        ObjectMapper om = new ObjectMapper();
-        if (data != null) {
-            try {
-                serializedValue = om.writeValueAsString(data).getBytes();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+    public KafkaRequestDto deserialize(String topic, byte[] data) {
+        try {
+            return objectMapper.readValue(data, KafkaRequestDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        return serializedValue;
     }
 }

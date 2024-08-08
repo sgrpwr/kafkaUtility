@@ -2,10 +2,10 @@ package io.github.sgrpwr.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.sgrpwr.common.DynamicBusinessLogicService;
-import io.github.sgrpwr.common.KafkaListenerProperties;
+import io.github.sgrpwr.config.KafkaDeserializer;
 import io.github.sgrpwr.dtos.KafkaRequestDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -16,9 +16,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
@@ -71,14 +68,7 @@ public class KafkaConsumerService {
         }
     }
 
-    /*private <T> T deserializeObject(byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-             ObjectInputStream ois = new ObjectInputStream(bais)) {
-            return clazz.cast(ois.readObject());
-        }
-    }
-
-   *//* @Bean
+    /* @Bean
     public ConsumerAwareListenerErrorHandler consumerErrorHandler() {
         return (message, exception, consumer) -> {
             logger.error("Error while processing: " + message.getPayload() + ", exception: " + exception.getMessage());
@@ -91,14 +81,16 @@ public class KafkaConsumerService {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaDeserializer.class.getName());
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         try (KafkaConsumer<String, KafkaRequestDto> consumer = new KafkaConsumer<>(properties)) {
             consumer.subscribe(Collections.singletonList(topic));
             StringBuilder messages = new StringBuilder();
 
-            consumer.poll(Duration.ofSeconds(10)).forEach(record -> {
+            // Poll for messages
+            ConsumerRecords<String, KafkaRequestDto> records = consumer.poll(Duration.ofSeconds(10));
+            records.forEach(record -> {
                 messages.append("Offset: ").append(record.offset())
                         .append(", Key: ").append(record.key())
                         .append(", Value: ").append(record.value())
@@ -108,4 +100,5 @@ public class KafkaConsumerService {
             return messages.toString();
         }
     }
-}
+
+    }
