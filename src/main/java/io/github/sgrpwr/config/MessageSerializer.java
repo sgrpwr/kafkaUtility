@@ -1,6 +1,6 @@
-package io.github.sgrpwr.utils;
+package io.github.sgrpwr.config;
 
-import io.github.sgrpwr.DTO.KafkaRequestDto;
+import io.github.sgrpwr.dtos.KafkaRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;

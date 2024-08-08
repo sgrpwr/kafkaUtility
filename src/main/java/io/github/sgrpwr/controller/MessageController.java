@@ -1,33 +1,49 @@
 package io.github.sgrpwr.controller;
 
-import io.github.sgrpwr.DTO.KafkaRequestDto;
-import io.github.sgrpwr.producer.MessageProducer;
+import io.github.sgrpwr.consumer.KafkaConsumerService;
+import io.github.sgrpwr.dtos.KafkaRequestDto;
+import io.github.sgrpwr.producer.KafkaProducerService;
+import io.github.sgrpwr.consumer.KafkaConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/kafka")
+@RequestMapping("/api/kafka")
 public class MessageController {
 
-    private MessageProducer messageProducer;
+    private final KafkaProducerService kafkaProducerService;
+    private final KafkaConsumerService kafkaConsumerService;
 
     @Autowired
-    public MessageController(MessageProducer messageProducer) {
-        this.messageProducer = messageProducer;
+    public MessageController(KafkaProducerService kafkaProducerService, KafkaConsumerService kafkaConsumerService) {
+        this.kafkaProducerService = kafkaProducerService;
+        this.kafkaConsumerService = kafkaConsumerService;
     }
 
-    @CrossOrigin
-    @RequestMapping(value = "/publish", method = {RequestMethod.POST})
-    public ResponseEntity<String> publishTest(@RequestBody KafkaRequestDto message) {
-        messageProducer.publishToQueue(message, null);
-        return new ResponseEntity<>("Message sent", HttpStatus.OK);
+    @PostMapping("/publish")
+    public ResponseEntity<String> sendMessage(@RequestBody KafkaRequestDto kafkaRequestDto) {
+        try {
+            kafkaProducerService.sendMessage(kafkaRequestDto);
+            return new ResponseEntity<>("Message sent successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to send message: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /*@GetMapping(value = "/publish")
-    public ResponseEntity<String> publishTest(@RequestParam("message") String message) {
-        messageProducer.publishMessage(message);
-        return new ResponseEntity<>("Message sent", HttpStatus.OK);
-    }*/
+    @GetMapping("/consume")
+    public ResponseEntity<String> consumeMessages(@RequestParam String topic) {
+        try {
+            String messages = kafkaConsumerService.consumeMessages(topic);
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to consume messages: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<String> getStatus() {
+        return new ResponseEntity<>("Kafka application is up and running", HttpStatus.OK);
+    }
 }

@@ -1,4 +1,4 @@
-    package io.github.sgrpwr;
+package io.github.sgrpwr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

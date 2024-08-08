@@ -1,4 +1,4 @@
-package io.github.sgrpwr.DTO;
+package io.github.sgrpwr.dtos;
 
 import lombok.Data;
 
