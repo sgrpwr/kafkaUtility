@@ -1,4 +1,4 @@
-package io.github.sgrpwr.exceptions;
+package in.countrydelight.sagar01.exceptions;
 
 public class CustomKafkaException extends RuntimeException {
     private final ErrorType errorType;

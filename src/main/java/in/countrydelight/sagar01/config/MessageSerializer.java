@@ -1,8 +1,8 @@
-package io.github.sgrpwr.config;
+package in.countrydelight.sagar01.config;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sgrpwr.dtos.KafkaRequestDto;
+import in.countrydelight.sagar01.dtos.KafkaRequestDto;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

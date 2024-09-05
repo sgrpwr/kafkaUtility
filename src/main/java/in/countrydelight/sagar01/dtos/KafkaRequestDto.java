@@ -1,11 +1,11 @@
-package io.github.sgrpwr.dtos;
+package in.countrydelight.sagar01.dtos;
 
 import lombok.Data;
 
 @Data
 public class KafkaRequestDto {
 	
-	private String analyticsType;
+	private String topicName;
 	private String sourceType;
-	private Object body;
+	private String body;
 }

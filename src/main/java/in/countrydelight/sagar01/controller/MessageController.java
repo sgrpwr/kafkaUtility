@@ -1,9 +1,8 @@
-package io.github.sgrpwr.controller;
+package in.countrydelight.sagar01.controller;
 
-import io.github.sgrpwr.consumer.KafkaConsumerService;
-import io.github.sgrpwr.dtos.KafkaRequestDto;
-import io.github.sgrpwr.producer.KafkaProducerService;
-import io.github.sgrpwr.consumer.KafkaConsumerService;
+import in.countrydelight.sagar01.consumer.KafkaConsumerService;
+import in.countrydelight.sagar01.producer.KafkaProducerService;
+import in.countrydelight.sagar01.dtos.KafkaRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

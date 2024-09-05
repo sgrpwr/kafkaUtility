@@ -1,6 +1,6 @@
-package io.github.sgrpwr.exceptions;
+package in.countrydelight.sagar01.exceptions;
 
-import io.github.sgrpwr.common.Constants;
+import in.countrydelight.sagar01.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

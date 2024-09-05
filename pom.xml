@@ -233,7 +233,7 @@
     <developers>
         <developer>
             <name>Sagar Pawar</name>
-            <email>pawarsgr18@gmail.com</email>
+            <email>sagar01@countrydelight.in</email>
             <organization>io.github.sgrpwr</organization>
             <organizationUrl>https://github.com/sgrpwr</organizationUrl>
         </developer>
@@ -242,7 +242,7 @@
     <scm>
         <connection>scm:git:git://github.com/sgrpwr/kafkaUtility.git</connection>
         <developerConnection>scm:git:ssh:github.com:sgrpwr/kafkaUtility.git</developerConnection>
-        <url>https://github.com/sgrpwr/kafkaUtility.git</url>
+        <url>https://sagar01cd@bitbucket.org/countrydelightcd/kafkautility.git</url>
     </scm>
 
 </project>

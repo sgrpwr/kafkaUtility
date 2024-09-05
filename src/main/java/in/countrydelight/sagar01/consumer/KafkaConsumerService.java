@@ -1,9 +1,8 @@
-package io.github.sgrpwr.consumer;
+package in.countrydelight.sagar01.consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sgrpwr.common.DynamicBusinessLogicService;
-import io.github.sgrpwr.config.KafkaDeserializer;
-import io.github.sgrpwr.dtos.KafkaRequestDto;
+import in.countrydelight.sagar01.common.DynamicBusinessLogicService;
+import in.countrydelight.sagar01.config.KafkaDeserializer;
+import in.countrydelight.sagar01.dtos.KafkaRequestDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -33,48 +33,60 @@ public class KafkaConsumerService {
     @Value("${kafka.topics}")
     private String[] topics;
 
+    @Value("${kafka.topics2}")
+    private String[] topics2;
+
     @Value("${kafka.consumer.group-id}")
     private String groupId;
+
+    @Value("${kafka.consumer.group-id2}")
+    private String groupId2;
 
     @Autowired
     public KafkaConsumerService(DynamicBusinessLogicService dynamicBusinessLogicService) {
         this.dynamicBusinessLogicService = dynamicBusinessLogicService;
     }
 
-    @KafkaListener(topics = "${kafka.topics}", groupId = "${kafka.consumer.group-id}")
-    public void listen(String record) {
+    @KafkaListener(topics = {"topic1", "topic2", "topic3"}, groupId = "${kafka.consumer.group-id}",
+            topicPartitions = {
+            @TopicPartition(topic = "topic1", partitions = {"0"}),
+            @TopicPartition(topic = "topic2", partitions = {"0", "1"}),
+            @TopicPartition(topic = "topic3", partitions = {"0"})})
+    public void listen1(KafkaRequestDto kafkaRequestDto) {
         try {
-            KafkaRequestDto kafkaRequestDto = deserializeJsonToObject(record, KafkaRequestDto.class);
             if (ObjectUtils.isEmpty(kafkaRequestDto)) {
-                logger.info("******************* Received empty message *****************");
+                logger.info("******************* Inside listen 1 *****************");
                 return;
             }
-
             logger.info("Received Message: " + kafkaRequestDto.getBody());
             System.out.println(kafkaRequestDto.getBody());
 
-            dynamicBusinessLogicService.processMessage(record, kafkaRequestDto);
+            dynamicBusinessLogicService.processMessage(kafkaRequestDto);
         } catch (Exception e) {
             logger.error("Error processing message: ", e);
         }
     }
 
-    private <T> T deserializeJsonToObject(String json, Class<T> clazz) {
+    @KafkaListener(topics = {"topic1", "topic2", "topic3"}, groupId = "${kafka.consumer.group-id}",
+            topicPartitions = {
+                    @TopicPartition(topic = "topic1", partitions = {"2"}),
+                    @TopicPartition(topic = "topic2", partitions = {"3"}),
+                    @TopicPartition(topic = "topic3", partitions = {"2","3"})})
+    public void listen2(KafkaRequestDto kafkaRequestDto) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(json, clazz);
+            if (ObjectUtils.isEmpty(kafkaRequestDto)) {
+                logger.info("******************* Inside listen 2 *****************");
+                return;
+            }
+            logger.info("Received Message: " + kafkaRequestDto.getBody());
+            System.out.println(kafkaRequestDto.getBody());
+
+            dynamicBusinessLogicService.processMessage(kafkaRequestDto);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to deserialize JSON to object", e);
+            logger.error("Error processing message: ", e);
         }
     }
 
-    /* @Bean
-    public ConsumerAwareListenerErrorHandler consumerErrorHandler() {
-        return (message, exception, consumer) -> {
-            logger.error("Error while processing: " + message.getPayload() + ", exception: " + exception.getMessage());
-            return null;
-        };
-    }*/
 
     public String consumeMessages(String topic) {
         Properties properties = new Properties();
@@ -101,4 +113,4 @@ public class KafkaConsumerService {
         }
     }
 
-    }
+}

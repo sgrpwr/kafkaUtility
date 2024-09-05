@@ -1,9 +1,9 @@
-package io.github.sgrpwr.producer;
+package in.countrydelight.sagar01.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sgrpwr.common.Constants;
-import io.github.sgrpwr.dtos.KafkaRequestDto;
-import io.github.sgrpwr.exceptions.CustomKafkaException;
+import in.countrydelight.sagar01.common.Constants;
+import in.countrydelight.sagar01.dtos.KafkaRequestDto;
+import in.countrydelight.sagar01.exceptions.CustomKafkaException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -34,11 +34,11 @@ public class KafkaProducerService {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducerService.class);
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final ProducerFactory<String, String> producerFactory;
+    private final KafkaTemplate<String, KafkaRequestDto> kafkaTemplate;
+    private final ProducerFactory<String, KafkaRequestDto> producerFactory;
 
     @Autowired
-    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate, ProducerFactory<String, String> producerFactory) {
+    public KafkaProducerService(KafkaTemplate<String, KafkaRequestDto> kafkaTemplate, ProducerFactory<String, KafkaRequestDto> producerFactory) {
         this.kafkaTemplate = kafkaTemplate;
         this.producerFactory = producerFactory;
     }
@@ -50,7 +50,7 @@ public class KafkaProducerService {
                 throw new CustomKafkaException("Kafka Template is null", CustomKafkaException.ErrorType.TEMPLATE_NULL);
             }
 
-            if (!topicExists(kafkaRequestDto.getAnalyticsType())) {
+            if (!topicExists(kafkaRequestDto.getTopicName())) {
                 logger.info("Kafka Topic does not exist");
                 throw new CustomKafkaException("Kafka Topic does not exist", CustomKafkaException.ErrorType.TOPIC_NOT_FOUND);
             }
@@ -60,14 +60,13 @@ public class KafkaProducerService {
                 throw new CustomKafkaException("Message is null or empty", CustomKafkaException.ErrorType.MESSAGE_EMPTY);
             }
 
-            String serializedBody = serializeObjectToJson(kafkaRequestDto);
+            ListenableFuture<SendResult<String, KafkaRequestDto>> future = kafkaTemplate.send(
+                    kafkaRequestDto.getTopicName(),kafkaRequestDto);
 
-            ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(
-                    kafkaRequestDto.getAnalyticsType(), serializedBody);
 
             future.addCallback(new ListenableFutureCallback<>() {
                 @Override
-                public void onSuccess(SendResult<String, String> result) {
+                public void onSuccess(SendResult<String, KafkaRequestDto> result) {
                     logger.info("Sent message with offset=[" + result.getRecordMetadata().offset() + "]");
                 }
 
@@ -83,6 +82,26 @@ public class KafkaProducerService {
             throw e;
         }
     }
+
+    public void sendMessageWithPartition(KafkaRequestDto kafkaRequestDto, int partition) {
+        String topic = kafkaRequestDto.getTopicName();
+        //String serializedBody = serializeObjectToJson(kafkaRequestDto);
+        ListenableFuture<SendResult<String, KafkaRequestDto>> future = kafkaTemplate.send(
+                topic, partition, null, kafkaRequestDto);
+
+        future.addCallback(new ListenableFutureCallback<>() {
+            @Override
+            public void onSuccess(SendResult<String, KafkaRequestDto> result) {
+                logger.info("Sent message to partition [" + partition + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            }
+
+            @Override
+            public void onFailure(Throwable ex) {
+                logger.error("Unable to send message to partition [" + partition + "] due to : " + ex.getMessage());
+            }
+        });
+    }
+
     private String serializeObjectToJson(KafkaRequestDto kafkaRequestDto) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
